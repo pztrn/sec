@@ -15,7 +15,7 @@ func TestParseString(t *testing.T) {
 		StringData string
 	}
 
-	os.Setenv("TESTSTRUCT_STRINGDATA", "test")
+	os.Setenv("STRINGDATA", "test")
 
 	s := &testStruct{}
 	err := Parse(s, nil)
@@ -51,7 +51,7 @@ func TestParseBoolean(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_BOOLDATA", testCase.TestData)
+		os.Setenv("BOOLDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -82,7 +82,7 @@ func TestParseBoolean(t *testing.T) {
 			require.Equal(t, errNotBool, err1)
 		}
 
-		os.Unsetenv("TESTSTRUCT_BOOLDATA")
+		os.Unsetenv("BOOLDATA")
 	}
 }
 
@@ -107,7 +107,7 @@ func TestParseInt8(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_INTDATA", testCase.TestData)
+		os.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -148,7 +148,7 @@ func TestParseInt8(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_INTDATA")
+		os.Unsetenv("INTDATA")
 	}
 }
 
@@ -173,7 +173,7 @@ func TestParseInt16(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_INTDATA", testCase.TestData)
+		os.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -214,7 +214,7 @@ func TestParseInt16(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_INTDATA")
+		os.Unsetenv("INTDATA")
 	}
 }
 
@@ -239,7 +239,7 @@ func TestParseInt32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_INTDATA", testCase.TestData)
+		os.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -280,7 +280,7 @@ func TestParseInt32(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_INTDATA")
+		os.Unsetenv("INTDATA")
 	}
 }
 
@@ -305,7 +305,7 @@ func TestParseInt64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_INTDATA", testCase.TestData)
+		os.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -346,7 +346,7 @@ func TestParseInt64(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_INTDATA")
+		os.Unsetenv("INTDATA")
 	}
 }
 
@@ -370,7 +370,7 @@ func TestParseUint8(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_UINTDATA", testCase.TestData)
+		os.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -411,7 +411,7 @@ func TestParseUint8(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_UINTDATA")
+		os.Unsetenv("UINTDATA")
 	}
 }
 
@@ -435,7 +435,7 @@ func TestParseUint16(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_UINTDATA", testCase.TestData)
+		os.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -476,7 +476,7 @@ func TestParseUint16(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_UINTDATA")
+		os.Unsetenv("UINTDATA")
 	}
 }
 
@@ -500,7 +500,7 @@ func TestParseUint32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_UINTDATA", testCase.TestData)
+		os.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -541,7 +541,7 @@ func TestParseUint32(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_UINTDATA")
+		os.Unsetenv("UINTDATA")
 	}
 }
 
@@ -565,7 +565,7 @@ func TestParseUint64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_UINTDATA", testCase.TestData)
+		os.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -606,7 +606,7 @@ func TestParseUint64(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_UINTDATA")
+		os.Unsetenv("UINTDATA")
 	}
 }
 
@@ -629,7 +629,7 @@ func TestParseFloat32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_FLOATDATA", testCase.TestData)
+		os.Setenv("FLOATDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -670,7 +670,7 @@ func TestParseFloat32(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_FLOATDATA")
+		os.Unsetenv("FLOATDATA")
 	}
 }
 
@@ -692,7 +692,7 @@ func TestParseFloat64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("TESTSTRUCT_FLOATDATA", testCase.TestData)
+		os.Setenv("FLOATDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -733,7 +733,7 @@ func TestParseFloat64(t *testing.T) {
 			}
 		}
 
-		os.Unsetenv("TESTSTRUCT_FLOATDATA")
+		os.Unsetenv("FLOATDATA")
 	}
 }
 

@@ -7,7 +7,6 @@ import (
 	"os"
 	"reflect"
 	"strconv"
-	"strings"
 )
 
 var (
@@ -75,7 +74,9 @@ func Parse(structure interface{}, config *Options) error {
 	}
 
 	// Parse structure.
-	composeTree(value, strings.ToUpper(value.Type().Name()))
+	// As this is a very first function launch we should not use any
+	// prefixes.
+	composeTree(value, "")
 
 	return parseEnv()
 }

@@ -116,14 +116,14 @@ func unsetenv(prefix string) {
 }
 
 func TestParseValidData(t *testing.T) {
-	setenv("TESTSTRUCT1_")
-	setenv("TESTSTRUCT1_TESTNEST_")
-	setenv("TESTSTRUCT1_TESTNESTANONYMOUS_")
-	setenv("TESTSTRUCT1_TESTNESTANONYMOUSPOINTER_")
-	setenv("TESTSTRUCT1_TESTNESTINTERFACE_")
-	setenv("TESTSTRUCT1_TESTNESTINTERFACEPOINTER_")
-	setenv("TESTSTRUCT1_TESTNESTPOINTER_")
-	setenv("TESTSTRUCT1_TESTUNEXPORTEDNEST_")
+	setenv("")
+	setenv("TESTNEST_")
+	setenv("TESTNESTANONYMOUS_")
+	setenv("TESTNESTANONYMOUSPOINTER_")
+	setenv("TESTNESTINTERFACE_")
+	setenv("TESTNESTINTERFACEPOINTER_")
+	setenv("TESTNESTPOINTER_")
+	setenv("TESTUNEXPORTEDNEST_")
 
 	ts := &testStruct1{}
 	err := Parse(ts, nil)
@@ -134,14 +134,14 @@ func TestParseValidData(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, testBool, ts.TestBool)
 
-	unsetenv("TESTSTRUCT1_")
-	unsetenv("TESTSTRUCT1_TESTNEST_")
-	unsetenv("TESTSTRUCT1_TESTNESTANONYMOUS_")
-	unsetenv("TESTSTRUCT1_TESTNESTANONYMOUSPOINTER_")
-	unsetenv("TESTSTRUCT1_TESTNESTINTERFACE_")
-	unsetenv("TESTSTRUCT1_TESTNESTINTERFACEPOINTER_")
-	unsetenv("TESTSTRUCT1_TESTNESTPOINTER_")
-	unsetenv("TESTSTRUCT1_TESTUNEXPORTEDNEST_")
+	unsetenv("")
+	unsetenv("TESTNEST_")
+	unsetenv("TESTNESTANONYMOUS_")
+	unsetenv("TESTNESTANONYMOUSPOINTER_")
+	unsetenv("TESTNESTINTERFACE_")
+	unsetenv("TESTNESTINTERFACEPOINTER_")
+	unsetenv("TESTNESTPOINTER_")
+	unsetenv("TESTUNEXPORTEDNEST_")
 }
 
 func TestParseNotPointerToStructurePassed(t *testing.T) {
