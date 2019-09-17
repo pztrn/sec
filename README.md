@@ -24,7 +24,7 @@ Go modules and dep are supported. Other package managers might or might not work
 
 ## Usage
 
-SEC is designed to be easy to use parser, so there is only one requirement - passed data should be a structure. You cannot do something like:
+SEC is designed to be easy to use parser, so there is only one requirement - passed data should be a pointer to structure. You cannot do something like:
 
 ```go
 var Data string
@@ -34,6 +34,27 @@ sec.Parse(&Data, nil)
 This will throw errors, as any type you'll pass, except for pointer to structure.
 
 SEC is unable to parse embedded unexported things except structures due to inability to get embedded field's address. Embed only structures, please.
+
+The very valid way to use SEC:
+
+```go
+type config struct{
+    Database struct{
+        URI string
+        Options string
+    }
+    HTTPTimeout int
+}
+
+cfg := &config{}
+
+err := Parse(cfg, nil)
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+No field tags supported yet, this in ToDo.
 
 ### Debug
 
