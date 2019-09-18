@@ -766,3 +766,30 @@ func TestParseStructWithInterfaceFields(t *testing.T) {
 	os.Unsetenv("DATA")
 	os.Unsetenv(debugFlagEnvName)
 }
+
+func TestParseStructWitStructAsInterface(t *testing.T) {
+	type testStruct struct {
+		Data interface{}
+		Int  int
+	}
+	type testUnderlyingStruct struct {
+		Data string
+	}
+
+	os.Setenv(debugFlagEnvName, "true")
+	os.Setenv("INT", "64")
+	os.Setenv("DATA_DATA", "Test data")
+
+	testCase := &testStruct{}
+	testUnderlyingCase := &testUnderlyingStruct{}
+	testCase.Data = testUnderlyingCase
+	err := Parse(testCase, nil)
+
+	require.Nil(t, err)
+	require.Equal(t, testCase.Int, 64)
+	require.Equal(t, testCase.Data.(*testUnderlyingStruct).Data, "Test data")
+
+	os.Unsetenv("INT")
+	os.Unsetenv("DATA_DATA")
+	os.Unsetenv(debugFlagEnvName)
+}

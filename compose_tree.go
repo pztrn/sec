@@ -25,9 +25,13 @@ func composeTree(value reflect.Value, prefix string) {
 
 		// If currently processed field - interface, then we should
 		// get underlying value.
-		//if fieldToProcess.Kind() == reflect.Interface {
-		//	fieldToProcess = fieldToProcess.Elem()
-		//}
+		if fieldToProcess.Kind() == reflect.Interface {
+			if fieldToProcess.Elem().Kind() == reflect.Ptr {
+				fieldToProcess = fieldToProcess.Elem().Elem()
+			} else if fieldToProcess.Elem().Kind() == reflect.Struct {
+				fieldToProcess = fieldToProcess.Elem()
+			}
+		}
 
 		// In 99% of cases we will get uninitialized things we should
 		// initialize.
