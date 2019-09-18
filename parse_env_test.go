@@ -737,4 +737,32 @@ func TestParseFloat64(t *testing.T) {
 	}
 }
 
-// Float
+func TestParseStructWithInterfaceFields(t *testing.T) {
+	type testStruct struct {
+		Data interface{}
+	}
+
+	os.Setenv(debugFlagEnvName, "true")
+
+	testCase := &testStruct{}
+	testCase.Data = 0
+
+	os.Setenv("DATA", "64")
+
+	err := Parse(testCase, nil)
+	require.Nil(t, err)
+	require.NotEqual(t, 64, testCase.Data)
+
+	testCase1 := &testStruct{}
+	d := 0
+	shouldBeRaw := 64
+	shouldBe := &shouldBeRaw
+	testCase1.Data = &d
+
+	err1 := Parse(testCase1, nil)
+	require.Nil(t, err1)
+	require.Equal(t, (*shouldBe), (*testCase1.Data.(*int)))
+
+	os.Unsetenv("DATA")
+	os.Unsetenv(debugFlagEnvName)
+}

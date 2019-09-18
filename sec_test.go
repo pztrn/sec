@@ -129,6 +129,7 @@ func TestParseValidData(t *testing.T) {
 	err := Parse(ts, nil)
 	t.Logf("Parsed data: %+v\n", ts)
 	t.Logf("Parsed nested data: %+v\n", ts.TestNest)
+	t.Logf("Parsed nested data as pointer: %+v\n", ts.TestNestPointer)
 	t.Logf("Parsed nested interface data: %+v\n", ts.TestNestInterface)
 
 	require.Nil(t, err)

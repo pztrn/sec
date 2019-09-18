@@ -32,7 +32,7 @@ func composeTree(value reflect.Value, prefix string) {
 		// In 99% of cases we will get uninitialized things we should
 		// initialize.
 		switch fieldToProcess.Kind() {
-		case reflect.Ptr, reflect.Map, reflect.Slice, reflect.Chan:
+		case reflect.Ptr, reflect.Map, reflect.Slice:
 			if fieldToProcess.IsNil() {
 				printDebug("Field '%s' is nil, initializing new one", fieldToProcessType.Name)
 
@@ -49,7 +49,7 @@ func composeTree(value reflect.Value, prefix string) {
 			}
 		}
 
-		printDebug("Field: '%s', type: %s, (anonymous or embedded: %t)", fieldToProcessType.Name, fieldToProcess.Type().Kind().String(), fieldToProcessType.Anonymous)
+		printDebug("Field: '%s', type: %s (anonymous or embedded: %t)", fieldToProcessType.Name, fieldToProcess.Type().Kind().String(), fieldToProcessType.Anonymous)
 
 		// Dealing with embedded things.
 		if fieldToProcessType.Anonymous {
@@ -61,7 +61,7 @@ func composeTree(value reflect.Value, prefix string) {
 		}
 
 		if fieldToProcess.Kind() != reflect.Struct && !fieldToProcess.CanSet() {
-			printDebug("Field '%s' can't be set, skipping", fieldToProcessType.Name)
+			printDebug("Field '%s' of type '%s' can't be set, skipping", fieldToProcessType.Name, fieldToProcess.Type().Kind().String())
 			continue
 		}
 

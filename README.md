@@ -24,14 +24,14 @@ Go modules and dep are supported. Other package managers might or might not work
 
 ## Usage
 
-SEC is designed to be easy to use parser, so there is only one requirement - passed data should be a pointer to structure. You cannot do something like:
+SEC is designed to be easy to use parser. There is only one requirement - passed data should be a pointer to structure. You cannot do something like:
 
 ```go
 var Data string
 sec.Parse(&Data, nil)
 ```
  
-This will throw errors, as any type you'll pass, except for pointer to structure.
+This will throw errors, as any type you'll pass, except for pointer to structure. It is fine to use anonymous structures inside passed one as well as use structures and pointers to them.
 
 SEC is unable to parse embedded unexported things except structures due to inability to get embedded field's address. Embed only structures, please.
 
@@ -54,7 +54,53 @@ if err != nil {
 }
 ```
 
+You can set database URI using ``DATABASE_URI`` environment variable. Same for others variables, so you should define environment variables in uppercase despite on how they're written in struct definition. Taking example above, other fields can be set with ``DATABASE_OPTIONS`` and ``HTTPTIMEOUT`` environment variables.
+
+### Field tags
+
 No field tags supported yet, this in ToDo.
+
+### Underlying interface{}
+
+Due to nature how Go works with variables you can do something like that, if you want to work with interfaces to keep variables:
+
+```go
+type config struct {
+    DataToKeep interface{}
+}
+
+var timeout int
+
+func main() {
+    c := &config{}
+    c.DataToKeep = &timeout
+    err := sec.Parse(c, nil)
+    ...
+    log.Printf("Timeout is %d\n", (*c.DataToKeep.(*int)))
+}
+```
+
+You can't do something like:
+
+```go
+type config struct {
+    DataToKeep interface{}
+}
+
+var timeout int
+
+func main() {
+    c := &config{}
+    c.DataToKeep = 0
+    err := sec.Parse(c, nil)
+    ...
+    log.Printf("Timeout is %d\n", (*c.DataToKeep.(*int)))
+}
+```
+
+``c.DataToKeep`` here will be always 0 because SEC will skip this field.
+
+It is because values behind interface{} aren't addressable in Go. Anyway, it is not recommended way to store variables at all and might break.
 
 ### Debug
 
