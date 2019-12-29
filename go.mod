@@ -1,4 +1,4 @@
-module gitlab.com/pztrn/sec
+module go.dev.pztrn.name/sec
 
 go 1.13
 
