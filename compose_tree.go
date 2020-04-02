@@ -19,6 +19,31 @@ func composeTree(value reflect.Value, prefix string) {
 		}
 	}
 
+	// Resolve Ptrs if any.
+	for {
+		if value.Kind() == reflect.Ptr {
+			value = value.Elem()
+			typeOf = value.Type()
+		} else {
+			break
+		}
+	}
+
+	if value.Kind() != reflect.Struct {
+		f := &field{
+			Name:    typeOf.Name(),
+			EnvVar:  curPrefix + strings.ToUpper(typeOf.Name()),
+			Pointer: value,
+			Kind:    value.Kind(),
+		}
+
+		parsedTree = append(parsedTree, f)
+
+		printDebug("Field data constructed: %+v", f)
+
+		return
+	}
+
 	for i := 0; i < value.NumField(); i++ {
 		fieldToProcess := value.Field(i)
 		fieldToProcessType := typeOf.Field(i)
@@ -79,6 +104,16 @@ func composeTree(value reflect.Value, prefix string) {
 				newElementPrefix = strings.ToUpper(newElementPrefix + typeOf.Field(i).Name)
 			}
 			composeTree(fieldToProcess, newElementPrefix)
+		} else if fieldToProcess.Kind() == reflect.Map {
+			newElementPrefix := curPrefix
+			if !fieldToProcessType.Anonymous {
+				newElementPrefix = strings.ToUpper(newElementPrefix + typeOf.Field(i).Name)
+			}
+
+			mapIter := fieldToProcess.MapRange()
+			for mapIter.Next() {
+				composeTree(mapIter.Value().Elem(), newElementPrefix+"_"+strings.ToUpper(mapIter.Key().String()))
+			}
 		} else {
 			f := &field{
 				Name:    typeOf.Field(i).Name,

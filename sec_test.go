@@ -81,6 +81,10 @@ type testStruct1 struct {
 	testUnexportedNest       *testDatas
 }
 
+type testStructWithMap struct {
+	MapConfig map[string]interface{}
+}
+
 func setenv(prefix string) {
 	os.Setenv(prefix+"TESTSTRING", testString)
 	os.Setenv(prefix+"TESTINT8", strconv.FormatInt(int64(testInt8), 10))
@@ -124,6 +128,8 @@ func TestParseValidData(t *testing.T) {
 	setenv("TESTNESTINTERFACEPOINTER_")
 	setenv("TESTNESTPOINTER_")
 	setenv("TESTUNEXPORTEDNEST_")
+	setenv("MAPCONFIG_TESTSTRUCT_")
+	setenv("MAPCONFIG_TESTSTRUCT_TESTNEST_")
 
 	ts := &testStruct1{}
 	err := Parse(ts, nil)
@@ -135,6 +141,15 @@ func TestParseValidData(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, testBool, ts.TestBool)
 
+	ts1 := &testStructWithMap{MapConfig: map[string]interface{}{
+		"teststruct": &testStruct1{},
+	}}
+
+	err1 := Parse(ts1, nil)
+	require.Nil(t, err1)
+
+	t.Logf("Parsed struct with map data: %+v\n", ts1.MapConfig["teststruct"])
+
 	unsetenv("")
 	unsetenv("TESTNEST_")
 	unsetenv("TESTNESTANONYMOUS_")
@@ -143,6 +158,8 @@ func TestParseValidData(t *testing.T) {
 	unsetenv("TESTNESTINTERFACEPOINTER_")
 	unsetenv("TESTNESTPOINTER_")
 	unsetenv("TESTUNEXPORTEDNEST_")
+	unsetenv("MAPCONFIG_TESTSTRUCT_")
+	unsetenv("MAPCONFIG_TESTSTRUCT_TESTNEST_")
 }
 
 func TestParseNotPointerToStructurePassed(t *testing.T) {
