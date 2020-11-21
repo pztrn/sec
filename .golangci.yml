@@ -1,0 +1,20 @@
+run:
+  deadline: 5m
+linters:
+  enable-all: true
+  disable:
+    - dupl
+    - gochecknoglobals
+    - exhaustive
+    - testpackage
+linters-settings:
+  lll:
+    line-length: 120
+  gocyclo:
+    min-complexity: 80
+  gocognit:
+    min-complexity: 100
+  funlen:
+    lines: 200
+    statements: 100
+

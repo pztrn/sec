@@ -1,7 +1,6 @@
 package sec
 
 import (
-	// stdlib
 	"reflect"
 )
 
@@ -18,5 +17,5 @@ type field struct {
 	Kind reflect.Kind
 
 	// Next variables are tag-related.
-	optional bool
+	// optional bool
 }

@@ -1,7 +1,6 @@
 package sec
 
 import (
-	// stdlib
 	"reflect"
 	"strings"
 )
@@ -30,16 +29,25 @@ func composeTree(value reflect.Value, prefix string) {
 	}
 
 	if value.Kind() != reflect.Struct {
-		f := &field{
-			Name:    typeOf.Name(),
-			EnvVar:  curPrefix + strings.ToUpper(typeOf.Name()),
-			Pointer: value,
-			Kind:    value.Kind(),
+		if value.Kind() == reflect.Map {
+			newElementPrefix := curPrefix
+
+			mapIter := value.MapRange()
+			for mapIter.Next() {
+				composeTree(mapIter.Value().Elem(), newElementPrefix+"_"+strings.ToUpper(mapIter.Key().String()))
+			}
+		} else {
+			f := &field{
+				Name:    typeOf.Name(),
+				EnvVar:  curPrefix + strings.ToUpper(typeOf.Name()),
+				Pointer: value,
+				Kind:    value.Kind(),
+			}
+
+			parsedTree = append(parsedTree, f)
+
+			printDebug("Field data constructed (start): %+v", f)
 		}
-
-		parsedTree = append(parsedTree, f)
-
-		printDebug("Field data constructed: %+v", f)
 
 		return
 	}
@@ -72,25 +80,35 @@ func composeTree(value reflect.Value, prefix string) {
 					fieldToProcess.Set(reflect.New(fieldToProcess.Type().Elem()))
 				} else {
 					printDebug("Field '%s' is unexported and will be ignored", fieldToProcessType.Name)
+
 					continue
 				}
+
 				fieldToProcess = fieldToProcess.Elem()
 			}
 		}
 
-		printDebug("Field: '%s', type: %s (anonymous or embedded: %t)", fieldToProcessType.Name, fieldToProcess.Type().Kind().String(), fieldToProcessType.Anonymous)
+		printDebug("Field: '%s', type: %s (anonymous or embedded: %t)",
+			fieldToProcessType.Name,
+			fieldToProcess.Type().Kind().String(),
+			fieldToProcessType.Anonymous,
+		)
 
 		// Dealing with embedded things.
 		if fieldToProcessType.Anonymous {
 			// We should not allow anything other than struct.
 			if fieldToProcess.Kind() != reflect.Struct {
 				printDebug("Field is embedded, but not a struct (%s), which cannot be used", fieldToProcess.Kind().String())
+
 				continue
 			}
 		}
 
 		if fieldToProcess.Kind() != reflect.Struct && !fieldToProcess.CanSet() {
-			printDebug("Field '%s' of type '%s' can't be set, skipping", fieldToProcessType.Name, fieldToProcess.Type().Kind().String())
+			printDebug("Field '%s' of type '%s' can't be set, skipping",
+				fieldToProcessType.Name,
+				fieldToProcess.Type().Kind().String())
+
 			continue
 		}
 
@@ -98,13 +116,15 @@ func composeTree(value reflect.Value, prefix string) {
 
 		// Hello, I'm recursion and I'm here to make you happy.
 		// I'll be launched only for structures to get their fields.
-		if fieldToProcess.Kind() == reflect.Struct {
+		switch fieldToProcess.Kind() {
+		case reflect.Struct:
 			newElementPrefix := curPrefix
 			if !fieldToProcessType.Anonymous {
 				newElementPrefix = strings.ToUpper(newElementPrefix + typeOf.Field(i).Name)
 			}
+
 			composeTree(fieldToProcess, newElementPrefix)
-		} else if fieldToProcess.Kind() == reflect.Map {
+		case reflect.Map:
 			newElementPrefix := curPrefix
 			if !fieldToProcessType.Anonymous {
 				newElementPrefix = strings.ToUpper(newElementPrefix + typeOf.Field(i).Name)
@@ -114,7 +134,7 @@ func composeTree(value reflect.Value, prefix string) {
 			for mapIter.Next() {
 				composeTree(mapIter.Value().Elem(), newElementPrefix+"_"+strings.ToUpper(mapIter.Key().String()))
 			}
-		} else {
+		default:
 			f := &field{
 				Name:    typeOf.Field(i).Name,
 				EnvVar:  curPrefix + strings.ToUpper(typeOf.Field(i).Name),
@@ -124,7 +144,7 @@ func composeTree(value reflect.Value, prefix string) {
 
 			parsedTree = append(parsedTree, f)
 
-			printDebug("Field data constructed: %+v", f)
+			printDebug("Field data constructed (end): %+v", f)
 		}
 	}
 }

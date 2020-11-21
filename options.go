@@ -11,8 +11,6 @@ type Options struct {
 	ErrorsAreCritical bool
 }
 
-var (
-	defaultOptions = &Options{
-		ErrorsAreCritical: false,
-	}
-)
+var defaultOptions = &Options{
+	ErrorsAreCritical: false,
+}

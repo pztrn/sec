@@ -2,5 +2,6 @@
     "go.testFlags": [
         "-test.v",
         "-cover"
-    ]
+    ],
+    "go.inferGopath": false
 }

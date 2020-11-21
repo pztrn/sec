@@ -1,12 +1,10 @@
 package sec
 
 import (
-	// stdlib
 	"os"
 	"strconv"
 	"testing"
 
-	// other
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,18 +24,23 @@ var (
 )
 
 type testDatas struct {
-	TestString  string
-	TestInt8    int8
-	TestInt16   int16
-	TestInt32   int32
-	TestInt64   int64
-	TestUint8   uint8
-	TestUint16  uint16
-	TestUint32  uint32
-	TestUint64  uint64
-	TestFloat32 float32
 	TestFloat64 float64
-	TestBool    bool
+	TestUint64  uint64
+	TestInt64   int64
+
+	TestFloat32 float32
+	TestUint32  uint32
+	TestInt32   int32
+
+	TestUint16 uint16
+	TestInt16  int16
+
+	TestUint8 uint8
+	TestInt8  int8
+
+	TestBool bool
+
+	TestString string
 }
 
 type testStringType string
@@ -46,32 +49,42 @@ type testStruct1 struct {
 	testDatas
 	testStringType
 	TestNestAnonymous struct {
-		TestString  string
-		TestInt8    int8
-		TestInt16   int16
-		TestInt32   int32
-		TestInt64   int64
-		TestUint8   uint8
-		TestUint16  uint16
-		TestUint32  uint32
-		TestUint64  uint64
-		TestFloat32 float32
 		TestFloat64 float64
-		TestBool    bool
+		TestUint64  uint64
+		TestInt64   int64
+
+		TestFloat32 float32
+		TestUint32  uint32
+		TestInt32   int32
+
+		TestUint16 uint16
+		TestInt16  int16
+
+		TestUint8 uint8
+		TestInt8  int8
+
+		TestBool bool
+
+		TestString string
 	}
 	TestNestAnonymousPointer *struct {
-		TestString  string
-		TestInt8    int8
-		TestInt16   int16
-		TestInt32   int32
-		TestInt64   int64
-		TestUint8   uint8
-		TestUint16  uint16
-		TestUint32  uint32
-		TestUint64  uint64
-		TestFloat32 float32
 		TestFloat64 float64
-		TestBool    bool
+		TestUint64  uint64
+		TestInt64   int64
+
+		TestFloat32 float32
+		TestUint32  uint32
+		TestInt32   int32
+
+		TestUint16 uint16
+		TestInt16  int16
+
+		TestUint8 uint8
+		TestInt8  int8
+
+		TestBool bool
+
+		TestString string
 	}
 	TestNestPointer          *testDatas
 	TestNest                 testDatas
@@ -90,7 +103,7 @@ func setenv(prefix string) {
 	os.Setenv(prefix+"TESTINT8", strconv.FormatInt(int64(testInt8), 10))
 	os.Setenv(prefix+"TESTINT16", strconv.FormatInt(int64(testInt16), 10))
 	os.Setenv(prefix+"TESTINT32", strconv.FormatInt(int64(testInt32), 10))
-	os.Setenv(prefix+"TESTINT64", strconv.FormatInt(int64(testInt64), 10))
+	os.Setenv(prefix+"TESTINT64", strconv.FormatInt(testInt64, 10))
 	os.Setenv(prefix+"TESTUINT8", strconv.FormatInt(int64(testUint8), 10))
 	os.Setenv(prefix+"TESTUINT16", strconv.FormatInt(int64(testUint16), 10))
 	os.Setenv(prefix+"TESTUINT32", strconv.FormatInt(int64(testUint32), 10))
@@ -209,8 +222,8 @@ func TestInvalidDebugFlagValue(t *testing.T) {
 func TestInvalidDebugFlagValueWithErrorsAreCritical(t *testing.T) {
 	_ = os.Setenv(debugFlagEnvName, "INVALID")
 	c := &testStruct1{}
-	err := Parse(c, &Options{ErrorsAreCritical: true})
 
+	err := Parse(c, &Options{ErrorsAreCritical: true})
 	if err != nil {
 		t.Log(err.Error())
 	}

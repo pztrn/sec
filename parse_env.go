@@ -1,7 +1,6 @@
 package sec
 
 import (
-	// stdlib
 	"errors"
 	"os"
 )
@@ -32,9 +31,11 @@ func parseEnv() error {
 
 	for _, element := range parsedTree {
 		printDebug("Processing element '%s'", element.EnvVar)
+
 		data, found := os.LookupEnv(element.EnvVar)
 		if !found {
 			printDebug("Value for '%s' environment variable wasn't found", element.EnvVar)
+
 			continue
 		} else {
 			printDebug("Value for '%s' will be: %s", element.EnvVar, data)

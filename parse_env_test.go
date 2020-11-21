@@ -1,12 +1,10 @@
 package sec
 
 import (
-	// stdlib
 	"os"
 	"strconv"
 	"testing"
 
-	// other
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,10 +16,12 @@ func TestParseString(t *testing.T) {
 	os.Setenv("STRINGDATA", "test")
 
 	s := &testStruct{}
+
 	err := Parse(s, nil)
 	if err != nil {
 		t.Log(err.Error())
 	}
+
 	require.Nil(t, err)
 }
 
@@ -56,10 +56,12 @@ func TestParseBoolean(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.BoolData)
 
@@ -69,6 +71,7 @@ func TestParseBoolean(t *testing.T) {
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
 		var checkNotBoolError bool
+
 		_, err2 := strconv.ParseBool(testCase.TestData)
 		if err2 != nil {
 			checkNotBoolError = true
@@ -78,6 +81,7 @@ func TestParseBoolean(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 			require.Equal(t, errNotBool, err1)
 		}
@@ -112,10 +116,12 @@ func TestParseInt8(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.IntData)
 
@@ -124,12 +130,16 @@ func TestParseInt8(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseInt(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != int64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -138,11 +148,13 @@ func TestParseInt8(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotInt, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotInt8, err1)
 			}
@@ -178,10 +190,12 @@ func TestParseInt16(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.IntData)
 
@@ -190,12 +204,16 @@ func TestParseInt16(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseInt(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != int64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -204,11 +222,13 @@ func TestParseInt16(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotInt, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotInt16, err1)
 			}
@@ -244,10 +264,12 @@ func TestParseInt32(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.IntData)
 
@@ -256,12 +278,16 @@ func TestParseInt32(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseInt(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != int64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -270,11 +296,13 @@ func TestParseInt32(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotInt, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotInt32, err1)
 			}
@@ -310,10 +338,12 @@ func TestParseInt64(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.IntData)
 
@@ -322,12 +352,16 @@ func TestParseInt64(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseInt(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != testCase.ValidData {
 			checkRangeError = true
 		}
@@ -336,11 +370,13 @@ func TestParseInt64(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotInt, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotInt64, err1)
 			}
@@ -375,10 +411,12 @@ func TestParseUint8(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.UintData)
 
@@ -387,12 +425,16 @@ func TestParseUint8(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseUint(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != uint64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -401,11 +443,13 @@ func TestParseUint8(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotUint, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotUint8, err1)
 			}
@@ -440,10 +484,12 @@ func TestParseUint16(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.UintData)
 
@@ -452,12 +498,16 @@ func TestParseUint16(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseUint(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != uint64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -466,11 +516,13 @@ func TestParseUint16(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotUint, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotUint16, err1)
 			}
@@ -505,10 +557,12 @@ func TestParseUint32(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.UintData)
 
@@ -517,12 +571,16 @@ func TestParseUint32(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseUint(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != uint64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -531,11 +589,13 @@ func TestParseUint32(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotUint, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotUint32, err1)
 			}
@@ -570,10 +630,12 @@ func TestParseUint64(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.UintData)
 
@@ -582,12 +644,16 @@ func TestParseUint64(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseUint(testCase.TestData, 10, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != testCase.ValidData {
 			checkRangeError = true
 		}
@@ -596,11 +662,13 @@ func TestParseUint64(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotUint, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotUint64, err1)
 			}
@@ -634,10 +702,12 @@ func TestParseFloat32(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.FloatData)
 
@@ -646,12 +716,16 @@ func TestParseFloat32(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseFloat(testCase.TestData, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != float64(testCase.ValidData) {
 			checkRangeError = true
 		}
@@ -660,11 +734,13 @@ func TestParseFloat32(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotFloat, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotFloat32, err1)
 			}
@@ -697,10 +773,12 @@ func TestParseFloat64(t *testing.T) {
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
 		s := &testStruct{}
+
 		err := Parse(s, nil)
 		if err != nil {
 			t.Log(err.Error())
 		}
+
 		require.Nil(t, err)
 		require.Equal(t, testCase.ValidData, s.FloatData)
 
@@ -709,12 +787,16 @@ func TestParseFloat64(t *testing.T) {
 		s1 := &testStruct{}
 		err1 := Parse(s1, &Options{ErrorsAreCritical: true})
 
-		var checkNotIntError bool
-		var checkRangeError bool
+		var (
+			checkNotIntError bool
+			checkRangeError  bool
+		)
+
 		passedData, err2 := strconv.ParseFloat(testCase.TestData, 64)
 		if err2 != nil {
 			checkNotIntError = true
 		}
+
 		if passedData != testCase.ValidData {
 			checkRangeError = true
 		}
@@ -723,11 +805,13 @@ func TestParseFloat64(t *testing.T) {
 			if err1 == nil {
 				t.Log("No error returned!")
 			}
+
 			require.NotNil(t, err1)
 
 			if checkNotIntError {
 				require.Equal(t, errNotFloat, err1)
 			}
+
 			if checkRangeError {
 				require.Equal(t, errNotFloat64, err1)
 			}
@@ -772,6 +856,7 @@ func TestParseStructWitStructAsInterface(t *testing.T) {
 		Data interface{}
 		Int  int
 	}
+
 	type testUnderlyingStruct struct {
 		Data string
 	}

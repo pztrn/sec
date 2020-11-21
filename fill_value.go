@@ -1,7 +1,6 @@
 package sec
 
 import (
-	// stdlib
 	"errors"
 	"reflect"
 	"strconv"
@@ -15,10 +14,12 @@ func fillValue(element *field, data string) error {
 		val, err := strconv.ParseBool(data)
 		if err != nil {
 			printDebug("Error occurred while parsing boolean: %s", err.Error())
+
 			if options.ErrorsAreCritical {
 				return errNotBool
 			}
 		}
+
 		element.Pointer.SetBool(val)
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		// Bitsize 64 here specified for a reason - actual ints
@@ -27,10 +28,12 @@ func fillValue(element *field, data string) error {
 		val, err := strconv.ParseInt(data, 10, 64)
 		if err != nil {
 			printDebug("Error occurred while parsing int: %s", err.Error())
+
 			if options.ErrorsAreCritical {
 				return errNotInt
 			}
 		}
+
 		switch element.Kind {
 		case reflect.Int8:
 			// int8 is an integer in [-128...127] range.
@@ -75,14 +78,16 @@ func fillValue(element *field, data string) error {
 		val, err := strconv.ParseUint(data, 10, 64)
 		if err != nil {
 			printDebug("Error occurred while parsing unsigned integer: %s", err.Error())
+
 			if options.ErrorsAreCritical {
 				return errNotUint
 			}
 		}
+
 		switch element.Kind {
 		case reflect.Uint8:
 			// uint8 is an integer in [0...255] range.
-			if val <= 255 {
+			if val <= uint64(^uint8(0)) {
 				element.Pointer.SetUint(val)
 			} else {
 				printDebug("Data in environment variable '%s' isn't uint8", element.EnvVar)
@@ -93,7 +98,7 @@ func fillValue(element *field, data string) error {
 			}
 		case reflect.Uint16:
 			// uint16 is an integer in [0...65535] range.
-			if val <= 65535 {
+			if val <= uint64(^uint16(0)) {
 				element.Pointer.SetUint(val)
 			} else {
 				printDebug("Data in environment variable '%s' isn't uint16", element.EnvVar)
@@ -104,7 +109,7 @@ func fillValue(element *field, data string) error {
 			}
 		case reflect.Uint32:
 			// uint32 is an integer in [0...4294967295] range.
-			if val <= 4294967295 {
+			if val <= uint64(^uint32(0)) {
 				element.Pointer.SetUint(val)
 			} else {
 				printDebug("Data in environment variable '%s' isn't uint32", element.EnvVar)
@@ -123,19 +128,25 @@ func fillValue(element *field, data string) error {
 		val, err := strconv.ParseFloat(data, 64)
 		if err != nil {
 			printDebug("Error occurred while parsing float: %s", err.Error())
+
 			if options.ErrorsAreCritical {
 				return errNotFloat
 			}
 		}
+
 		element.Pointer.SetFloat(val)
 	case reflect.Interface:
 		// We should not attempt to work with data in interface{}
 		// unless it is a pointer to value.
 		if element.Pointer.Elem().Kind() != reflect.Ptr {
-			printDebug("Element for environment variable '%s' isn't a pointer and put into interface{}. Nothing will be done with this element.", element.EnvVar)
+			printDebug("Element for environment variable '%s' isn't a pointer and put "+
+				"into interface{}. Nothing will be done with this element.",
+				element.EnvVar)
+
 			if options.ErrorsAreCritical {
 				return errors.New("element for environment variable '" + element.EnvVar + "' isn't a pointer and put into interface")
 			}
+
 			return nil
 		}
 
@@ -143,7 +154,9 @@ func fillValue(element *field, data string) error {
 		// It goes interface{} -> ptr -> real element.
 		element.Pointer = element.Pointer.Elem().Elem()
 		element.Kind = element.Pointer.Kind()
+
 		return fillValue(element, data)
 	}
+
 	return nil
 }

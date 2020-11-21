@@ -1,7 +1,6 @@
 package sec
 
 import (
-	// stdlib
 	"errors"
 	"log"
 	"os"
@@ -38,9 +37,11 @@ func Parse(structure interface{}, config *Options) error {
 	debugFlagRaw, found := os.LookupEnv(debugFlagEnvName)
 	if found {
 		var err error
+
 		debug, err = strconv.ParseBool(debugFlagRaw)
 		if err != nil {
-			log.Println("Invalid '" + debugFlagEnvName + "' environment variable data: '" + debugFlagRaw + "'. Error: " + err.Error())
+			log.Printf("Invalid '%s' environment variable data: '%s'. Error: %s", debugFlagEnvName, debugFlagRaw, err.Error())
+
 			if options.ErrorsAreCritical {
 				return err
 			}
