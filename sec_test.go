@@ -43,11 +43,11 @@ type testDatas struct {
 	TestString string
 }
 
-type testStringType string
+// type testStringType string
 
 type testStruct1 struct {
 	testDatas
-	testStringType
+	// testStringType
 	TestNestAnonymous struct {
 		TestFloat64 float64
 		TestUint64  uint64
