@@ -43,6 +43,7 @@ func Parse(structure interface{}, config *Options) error {
 			log.Printf("Invalid '%s' environment variable data: '%s'. Error: %s", debugFlagEnvName, debugFlagRaw, err.Error())
 
 			if options.ErrorsAreCritical {
+				// nolint
 				return err
 			}
 		} else {

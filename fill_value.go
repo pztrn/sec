@@ -1,7 +1,7 @@
 package sec
 
 import (
-	"errors"
+	"fmt"
 	"reflect"
 	"strconv"
 )
@@ -144,7 +144,9 @@ func fillValue(element *field, data string) error {
 				element.EnvVar)
 
 			if options.ErrorsAreCritical {
-				return errors.New("element for environment variable '" + element.EnvVar + "' isn't a pointer and put into interface")
+				// Better to say to user what is wrong instead of fighting with linters, so:
+				// nolint
+				return fmt.Errorf("element for environment variable '%s' isn't a pointer and put into interface", element.EnvVar)
 			}
 
 			return nil

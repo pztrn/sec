@@ -90,8 +90,8 @@ type testStruct1 struct {
 	TestNest                 testDatas
 	TestNestInterfacePointer interface{}
 	TestNestInterface        interface{}
-	testUnexported           string
-	testUnexportedNest       *testDatas
+	// testUnexported           string
+	// testUnexportedNest       *testDatas
 }
 
 type testStructWithMap struct {
