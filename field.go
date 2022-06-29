@@ -9,13 +9,10 @@ import (
 type field struct {
 	// Name is a field name. Mostly for debugging purpose.
 	Name string
-	// Pointer is a pointer to field wrapped in reflect.Value.
-	Pointer reflect.Value
 	// EnvVar is a name of environment variable we will try to read.
 	EnvVar string
+	// Pointer is a pointer to field wrapped in reflect.Value.
+	Pointer reflect.Value
 	// Kind is a reflect.Kind value.
 	Kind reflect.Kind
-
-	// Next variables are tag-related.
-	// optional bool
 }

@@ -5,7 +5,7 @@ name: build
 
 steps:
   - name: lint
-    image: golangci/golangci-lint:v1.43.0
+    image: code.pztrn.name/containers/mirror/golangci/golangci-lint:v1.46.2
     environment:
       GOFLAGS: -mod=vendor
       CGO_ENABLED: 0
@@ -13,9 +13,8 @@ steps:
       - golangci-lint run
 
   - name: test
-    image: golang:1.17.3-alpine
+    image: code.pztrn.name/containers/mirror/golang:1.18.3-alpine
     environment:
-      GOFLAGS: -mod=vendor
       CGO_ENABLED: 0
     commands:
       - go test ./...

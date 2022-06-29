@@ -1,3 +1,4 @@
+// nolint:exhaustruct
 package sec
 
 import (
@@ -24,74 +25,54 @@ var (
 )
 
 type testDatas struct {
+	TestString  string
 	TestFloat64 float64
 	TestUint64  uint64
 	TestInt64   int64
-
 	TestFloat32 float32
 	TestUint32  uint32
 	TestInt32   int32
-
-	TestUint16 uint16
-	TestInt16  int16
-
-	TestUint8 uint8
-	TestInt8  int8
-
-	TestBool bool
-
-	TestString string
+	TestUint16  uint16
+	TestInt16   int16
+	TestUint8   uint8
+	TestInt8    int8
+	TestBool    bool
 }
 
-// type testStringType string
-
 type testStruct1 struct {
-	testDatas
-	// testStringType
-	TestNestAnonymous struct {
-		TestFloat64 float64
-		TestUint64  uint64
-		TestInt64   int64
-
-		TestFloat32 float32
-		TestUint32  uint32
-		TestInt32   int32
-
-		TestUint16 uint16
-		TestInt16  int16
-
-		TestUint8 uint8
-		TestInt8  int8
-
-		TestBool bool
-
-		TestString string
-	}
-	TestNestAnonymousPointer *struct {
-		TestFloat64 float64
-		TestUint64  uint64
-		TestInt64   int64
-
-		TestFloat32 float32
-		TestUint32  uint32
-		TestInt32   int32
-
-		TestUint16 uint16
-		TestInt16  int16
-
-		TestUint8 uint8
-		TestInt8  int8
-
-		TestBool bool
-
-		TestString string
-	}
-	TestNestPointer          *testDatas
-	TestNest                 testDatas
-	TestNestInterfacePointer interface{}
 	TestNestInterface        interface{}
-	// testUnexported           string
-	// testUnexportedNest       *testDatas
+	TestNestInterfacePointer interface{}
+	TestNestAnonymousPointer *struct {
+		TestString  string
+		TestFloat64 float64
+		TestUint64  uint64
+		TestInt64   int64
+		TestFloat32 float32
+		TestUint32  uint32
+		TestInt32   int32
+		TestUint16  uint16
+		TestInt16   int16
+		TestUint8   uint8
+		TestInt8    int8
+		TestBool    bool
+	}
+	TestNestPointer   *testDatas
+	TestNestAnonymous struct {
+		TestString  string
+		TestFloat64 float64
+		TestUint64  uint64
+		TestInt64   int64
+		TestFloat32 float32
+		TestUint32  uint32
+		TestInt32   int32
+		TestUint16  uint16
+		TestInt16   int16
+		TestUint8   uint8
+		TestInt8    int8
+		TestBool    bool
+	}
+	TestNest testDatas
+	testDatas
 }
 
 type testStructWithMap struct {
@@ -209,7 +190,8 @@ func TestParseNotStructurePassed(t *testing.T) {
 }
 
 func TestInvalidDebugFlagValue(t *testing.T) {
-	_ = os.Setenv(debugFlagEnvName, "INVALID")
+	t.Setenv(debugFlagEnvName, "INVALID")
+
 	c := &testStruct1{}
 	err := Parse(c, nil)
 
@@ -220,7 +202,8 @@ func TestInvalidDebugFlagValue(t *testing.T) {
 }
 
 func TestInvalidDebugFlagValueWithErrorsAreCritical(t *testing.T) {
-	_ = os.Setenv(debugFlagEnvName, "INVALID")
+	t.Setenv(debugFlagEnvName, "INVALID")
+
 	c := &testStruct1{}
 
 	err := Parse(c, &Options{ErrorsAreCritical: true})

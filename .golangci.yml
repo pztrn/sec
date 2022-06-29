@@ -7,6 +7,12 @@ linters:
     - gochecknoglobals
     - exhaustive
     - testpackage
+    - cyclop
+    - varnamelen
+    - gomnd
+    - paralleltest
+    # Deprecated.
+    - exhaustivestruct
 linters-settings:
   lll:
     line-length: 120
@@ -17,4 +23,3 @@ linters-settings:
   funlen:
     lines: 200
     statements: 100
-

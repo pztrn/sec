@@ -1,3 +1,4 @@
+// nolint:exhaustruct
 package sec
 
 import (
@@ -13,7 +14,7 @@ func TestParseString(t *testing.T) {
 		StringData string
 	}
 
-	os.Setenv("STRINGDATA", "test")
+	t.Setenv("STRINGDATA", "test")
 
 	s := &testStruct{}
 
@@ -51,7 +52,7 @@ func TestParseBoolean(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("BOOLDATA", testCase.TestData)
+		t.Setenv("BOOLDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -111,7 +112,7 @@ func TestParseInt8(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("INTDATA", testCase.TestData)
+		t.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -185,7 +186,7 @@ func TestParseInt16(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("INTDATA", testCase.TestData)
+		t.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -259,7 +260,7 @@ func TestParseInt32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("INTDATA", testCase.TestData)
+		t.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -333,7 +334,7 @@ func TestParseInt64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("INTDATA", testCase.TestData)
+		t.Setenv("INTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -406,7 +407,7 @@ func TestParseUint8(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("UINTDATA", testCase.TestData)
+		t.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -479,7 +480,7 @@ func TestParseUint16(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("UINTDATA", testCase.TestData)
+		t.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -552,7 +553,7 @@ func TestParseUint32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("UINTDATA", testCase.TestData)
+		t.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -625,7 +626,7 @@ func TestParseUint64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("UINTDATA", testCase.TestData)
+		t.Setenv("UINTDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -697,7 +698,7 @@ func TestParseFloat32(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("FLOATDATA", testCase.TestData)
+		t.Setenv("FLOATDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -768,7 +769,7 @@ func TestParseFloat64(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Logf("Testing: %+v", testCase)
-		os.Setenv("FLOATDATA", testCase.TestData)
+		t.Setenv("FLOATDATA", testCase.TestData)
 
 		// If ErrorsAreCritical == false, then we should check only
 		// equality of parsed data and valid data.
@@ -826,12 +827,12 @@ func TestParseStructWithInterfaceFields(t *testing.T) {
 		Data interface{}
 	}
 
-	os.Setenv(debugFlagEnvName, "true")
+	t.Setenv(debugFlagEnvName, "true")
 
 	testCase := &testStruct{}
 	testCase.Data = 0
 
-	os.Setenv("DATA", "64")
+	t.Setenv("DATA", "64")
 
 	err := Parse(testCase, nil)
 	require.Nil(t, err)
@@ -845,6 +846,7 @@ func TestParseStructWithInterfaceFields(t *testing.T) {
 
 	err1 := Parse(testCase1, nil)
 	require.Nil(t, err1)
+	// nolint:forcetypeassert
 	require.Equal(t, (*shouldBe), (*testCase1.Data.(*int)))
 
 	os.Unsetenv("DATA")
@@ -861,9 +863,9 @@ func TestParseStructWitStructAsInterface(t *testing.T) {
 		Data string
 	}
 
-	os.Setenv(debugFlagEnvName, "true")
-	os.Setenv("INT", "64")
-	os.Setenv("DATA_DATA", "Test data")
+	t.Setenv(debugFlagEnvName, "true")
+	t.Setenv("INT", "64")
+	t.Setenv("DATA_DATA", "Test data")
 
 	testCase := &testStruct{}
 	testUnderlyingCase := &testUnderlyingStruct{}
@@ -872,6 +874,7 @@ func TestParseStructWitStructAsInterface(t *testing.T) {
 
 	require.Nil(t, err)
 	require.Equal(t, testCase.Int, 64)
+	// nolint:forcetypeassert
 	require.Equal(t, testCase.Data.(*testUnderlyingStruct).Data, "Test data")
 
 	os.Unsetenv("INT")
